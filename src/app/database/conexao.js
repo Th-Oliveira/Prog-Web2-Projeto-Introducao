@@ -1,4 +1,5 @@
 import mysql from 'mysql'
+import { promisify } from 'node:util';
 
 const conexao = mysql.createConnection({
     host: '127.0.0.1',
@@ -10,5 +11,8 @@ const conexao = mysql.createConnection({
 
 conexao.connect()
 
+// Transforma query em Promise (resolve apenas "results")
+conexao.queryAsync = promisify(conexao.query).bind(conexao);
+
 // Aplicamos o export para utilizar o objeto em outros aplicativos
-export default conexao
+export default conexao;
